@@ -4,6 +4,6 @@
 
 @section('content')
     <div id="cart"></div>
-    <!--cart></cart-->
+    <!--cart> </cart-->
 
 @endsection

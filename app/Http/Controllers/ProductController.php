@@ -22,7 +22,7 @@ class ProductController extends Controller
         if ($request->search) {
             $products = $products->where('name', 'LIKE', "%{$request->search}%");
         }
-        $products = $products->latest()->paginate(10);
+        $products = Product::all();
         if (request()->wantsJson()) {
             return ProductResource::collection($products);
         }
@@ -52,14 +52,16 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('products', 'public');
         }
-
+        
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'image' => $image_path,
             'barcode' => $request->barcode,
+            'hargabeli' => $request->hargabeli,
             'price' => $request->price,
             'quantity' => $request->quantity,
+            'satuan' => $request->satuan,
             'status' => $request->status
         ]);
 
@@ -103,8 +105,10 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->barcode = $request->barcode;
+        $product->hargabeli = $request->hargabeli;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
+        $product->satuan = $request->satuan;
         $product->status = $request->status;
 
         if ($request->hasFile('image')) {

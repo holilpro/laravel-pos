@@ -4,11 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function deleteorder($id)
+    {
+        //delete post by ID
+        //return $id;
+        $orderItems = OrderItem::where('order_id', $id)->get();
+        foreach($orderItems as $dt)
+        {
+            $product = Product::find($dt->product_id);
+            $previousQuantity = $product->quantity;
+            $newquantity = $previousQuantity + $dt->quantity;
+            $updated = Product::where('id', $dt->product_id)->update(['quantity' => $newquantity]);
+            //$updated = OrderItem::where('id', $dt->id)->delete();
+        }
+        $orderItems = OrderItem::where('order_id', $id)->delete();
+        $order = Order::where('id', $id)->delete();
+        
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Dihapus!.',
+        ]); 
+        
+
+    }
+
     public function index(Request $request)
     {
         $orders = new Order();

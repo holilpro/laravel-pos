@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { createRoot } from "react-dom";
+import { createRoot } from "react-dom/client";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { sum } from "lodash";

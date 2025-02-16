@@ -13,7 +13,7 @@
             @method('PUT')
 
             <div class="form-group">
-                <label for="name">{{ __('product.Name') }}</label>
+                <label for="name">Nama Produk</label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name"
                     placeholder="{{ __('product.Name') }}" value="{{ old('name', $product->name) }}">
                 @error('name')
@@ -59,9 +59,19 @@
                 </span>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="hargabeli">Harga Beli</label>
+                <input type="text" name="hargabeli" class="form-control @error('price') is-invalid @enderror" id="hargabeli"
+                    placeholder="Harga Beli" value="{{ old('hargabeli', $product->hargabeli) }}">
+                @error('price')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
 
             <div class="form-group">
-                <label for="price">{{ __('product.Price') }}</label>
+                <label for="price">Harga Jual</label>
                 <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
                     placeholder="{{ __('product.Price') }}" value="{{ old('price', $product->price) }}">
                 @error('price')
@@ -72,10 +82,20 @@
             </div>
 
             <div class="form-group">
-                <label for="quantity">{{ __('product.Quantity') }}</label>
+                <label for="quantity">Jumlah Stok</label>
                 <input type="text" name="quantity" class="form-control @error('quantity') is-invalid @enderror"
                     id="quantity" placeholder="{{ __('product.Quantity') }}" value="{{ old('quantity', $product->quantity) }}">
                 @error('quantity')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="name">Satuan</label>
+                <input type="text" name="satuan" class="form-control @error('name') is-invalid @enderror" id="satuan"
+                    placeholder="satuan" value="{{ old('name', $product->satuan) }}">
+                @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

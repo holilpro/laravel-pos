@@ -11,18 +11,20 @@
 @section('content')
 <div class="card product-list">
     <div class="card-body">
-        <table class="table">
+        <table  id="example2" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{{ __('product.ID') }}</th>
                     <th>{{ __('product.Name') }}</th>
                     <th>{{ __('product.Image') }}</th>
                     <th>{{ __('product.Barcode') }}</th>
-                    <th>{{ __('product.Price') }}</th>
-                    <th>{{ __('product.Quantity') }}</th>
+                    <th>Harga Beli</th>
+                    <th>Harga Jual</th>
+                    <th>Keuntungan</th>
+                    <th>Jumlah Stok</th>
+                    <th>Satuan</th>
                     <th>{{ __('product.Status') }}</th>
-                    <th>{{ __('product.Created_At') }}</th>
-                    <th>{{ __('product.Updated_At') }}</th>
+                    
                     <th>{{ __('product.Actions') }}</th>
                 </tr>
             </thead>
@@ -33,13 +35,15 @@
                     <td>{{$product->name}}</td>
                     <td><img class="product-img" src="{{ Storage::url($product->image) }}" alt=""></td>
                     <td>{{$product->barcode}}</td>
-                    <td>{{$product->price}}</td>
+                    <td>{{number_format($product->hargabeli, 2,',','.')}}</td>
+                    <td>{{number_format($product->price, 2,',','.')}}</td>
+                    <td>{{number_format($product->price-$product->hargabeli, 2,',','.')}} ({{number_format(($product->price-$product->hargabeli)/$product->hargabeli*100, 1,',','.')}}%)</td>
                     <td>{{$product->quantity}}</td>
+                    <td>{{$product->satuan}}</td>
                     <td>
                         <span class="right badge badge-{{ $product->status ? 'success' : 'danger' }}">{{$product->status ? __('common.Active') : __('common.Inactive') }}</span>
                     </td>
-                    <td>{{$product->created_at}}</td>
-                    <td>{{$product->updated_at}}</td>
+                    
                     <td>
                         <a href="{{ route('products.edit', $product) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                         <button class="btn btn-danger btn-delete" data-url="{{route('products.destroy', $product)}}"><i class="fas fa-trash"></i></button>
@@ -48,12 +52,27 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $products->render() }}
+        
     </div>
 </div>
 @endsection
 
 @section('js')
+<!-- jQuery -->
+<script src="{{ asset('adminlte3/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('adminlte3/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('adminlte3/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('adminlte3/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('adminlte3/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('adminlte3/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+
+<!-- AdminLTE App -->
+<script src="{{ asset('adminlte3/dist/js/adminlte.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('adminlte3/dist/js/demo.js') }}"></script>
+
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <script type="module">
     $(document).ready(function() {
@@ -89,5 +108,26 @@
             });
         });
     });
+
+</script>
+<script>
+  $(function () {
+     
+
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+
+    });
+    
+
+
+  });
 </script>
 @endsection

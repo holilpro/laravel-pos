@@ -32,9 +32,9 @@
                     <th>{{ __('order.ID') }}</th>
                     <th>{{ __('order.Customer_Name') }}</th>
                     <th>{{ __('order.Total') }}</th>
-                    <th>{{ __('order.Received_Amount') }}</th>
+                    <th>Bayar</th>
                     <th>{{ __('order.Status') }}</th>
-                    <th>{{ __('order.To_Pay') }}</th>
+                    <th>Sisa</th>
                     <th>{{ __('order.Created_At') }}</th>
                     <th>{{ __('order.Actions') }}</th>
                 </tr>
@@ -73,6 +73,7 @@
                             data-payment="{{ isset($order->payments) && count($order->payments) > 0 ? $order->payments[0]->amount : 0 }}">
                             <ion-icon size="samll" name="eye"></ion-icon>
                         </button>
+                        
 
                         @if($order->total() > $order->receivedAmount())
                             <!-- Button for Partial Payment -->
@@ -104,6 +105,8 @@
                                 </div>
                             </div>
                         @endif
+                        
+                        <i class='fas fa-trash-alt' style='font-size:24px;color:red' id="delete-order" data-id="{{$order->id}}"></i>
                     </td>
                 </tr>
                 @endforeach
@@ -280,6 +283,63 @@
         modal.find('#partialAmount').attr('max', remainingAmount); // Set max value for partial payment
     });
 });
+$('body').on('click', '#delete-order', function () {
 
+let idorder = $(this).data('id');
+let token   = $("meta[name='csrf-token']").attr("content");
+
+Swal.fire({
+    title: 'Apakah Kamu Yakin?',
+    text: "ingin menghapus data ini!",
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: 'TIDAK',
+    confirmButtonText: 'YA, HAPUS!'
+}).then((result) => {
+    if (result.isConfirmed) {
+
+        console.log('test');
+
+        //fetch to delete data
+        $.ajax({
+
+            url: "{{ route('folderutama')}}"+'/admin/deleteorder/'+ idorder,
+            type: "GET",
+            cache: false,
+            data: {
+                "_token": token
+            },
+            success:function(response){ 
+              if(response.success)
+              {
+                //show success message
+                Swal.fire({
+                    
+                    icon: 'success',
+                    title: `${response.message}`,
+                    showConfirmButton: true,
+                    timer: 4000
+                });
+                location.reload();
+                //remove post on table
+              }
+              else
+              {
+                Swal.fire({
+                      
+                      icon: 'error',
+                      title: `${response.message}`,
+                      showConfirmButton: true,
+                      timer: 30000
+                  });
+              }
+                
+               
+            }
+        });
+    
+    }
+})        
+});
 </script>
 @endsection
